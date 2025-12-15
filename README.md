@@ -2,23 +2,47 @@
 
 A lightweight WordPress plugin framework for hosting-related utilities by [Sites By Design](https://sitesbydesign.com.au).
 
+## Downloads
+
+📦 **[Download Latest Releases](https://github.com/scottnailon/GoodHost-Plugin/releases)**
+
+| Plugin | Description | Download |
+|--------|-------------|----------|
+| **GoodHost** (required) | Main framework/installer | [goodhost.zip](https://github.com/scottnailon/GoodHost-Plugin/releases/latest/download/goodhost.zip) |
+| **News Sitemap** | Google News sitemap generator | [goodhost-news-sitemap.zip](https://github.com/scottnailon/GoodHost-Plugin/releases/latest/download/goodhost-news-sitemap.zip) |
+
 ## Overview
 
 GoodHost provides a unified admin menu in WordPress for a collection of simple, focused sub-plugins. Each module handles one task well, without the bloat of large SEO or hosting plugins.
 
-## Architecture
+## Installation
 
-The GoodHost suite uses a **main installer + sub-plugins** architecture:
+### Quick Install
+
+1. Download the zip files from the [Releases page](https://github.com/scottnailon/GoodHost-Plugin/releases)
+2. In WordPress admin, go to **Plugins > Add New > Upload Plugin**
+3. Upload `goodhost.zip` first and activate
+4. Upload any sub-plugin zips (e.g., `goodhost-news-sitemap.zip`) and activate
+5. Configure via **GoodHost** menu in admin sidebar
+
+### Manual Install
+
+1. Download and unzip the plugin folders
+2. Upload to `wp-content/plugins/`
+3. Activate in WordPress admin
+
+## Architecture
 
 ```
 wp-content/plugins/
-├── goodhost/                      # Main installer plugin
+├── goodhost/                      # Main installer (required)
 │   ├── goodhost.php
+│   ├── readme.txt
 │   └── assets/
-│       └── goodhost-logo.png      # Optional local logo
 │
-└── goodhost-news-sitemap/         # Sub-plugin (example)
-    └── goodhost-news-sitemap.php
+└── goodhost-news-sitemap/         # Sub-plugin
+    ├── goodhost-news-sitemap.php
+    └── readme.txt
 ```
 
 ### Design Principles
@@ -29,28 +53,12 @@ wp-content/plugins/
 4. **Independent Operation**: Sub-plugins can be enabled/disabled independently
 5. **Minimal Footprint**: No unnecessary database tables or bloated options
 
-## Installation
-
-### Main Plugin (Required)
-
-1. Download the `goodhost` folder
-2. Upload to `wp-content/plugins/`
-3. Activate "GoodHost" in WordPress admin
-
-### Sub-Plugins
-
-1. Download the desired sub-plugin folder (e.g., `goodhost-news-sitemap`)
-2. Upload to `wp-content/plugins/`
-3. Activate the sub-plugin in WordPress admin
-4. Configure via **GoodHost** menu in admin sidebar
-
 ## Available Sub-Plugins
 
 ### News Sitemap
 
 Generates a Google News compatible sitemap at `yoursite.com/news-sitemap.xml`
 
-**Features:**
 - Follows [Google News Sitemap protocol](https://developers.google.com/search/docs/crawling-indexing/sitemaps/news-sitemap)
 - Configurable publication name and language
 - Filter by post types and categories
@@ -94,13 +102,6 @@ add_action('admin_menu', function() {
 
 - WordPress 5.0+
 - PHP 7.4+
-
-## Optional: Local Logo
-
-To use a local logo instead of loading from goodhost.com.au:
-
-1. Download the logo from `https://goodhost.com.au/wp-content/uploads/2021/10/goodhost-australian-web-hosting-2.png`
-2. Save as `goodhost-logo.png` in the `goodhost/assets/` folder
 
 ## License
 
