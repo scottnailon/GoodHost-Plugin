@@ -7,7 +7,6 @@
  * Author: Sites By Design
  * Author URI: https://sitesbydesign.com.au
  * License: GPL v2 or later
- * Requires Plugins: goodhost
  */
 
 if (!defined('ABSPATH')) { exit; }
@@ -36,7 +35,11 @@ class GoodHost_Code_Snippets {
     }
     
     public function register_module($modules) { $modules['code-snippets'] = ['name' => 'Code Snippets', 'description' => 'Custom PHP/CSS/JS', 'active' => true, 'settings_url' => admin_url('admin.php?page=goodhost-snippets')]; return $modules; }
-    public function add_admin_menu() { add_submenu_page('goodhost', 'Code Snippets', 'Code Snippets', 'manage_options', 'goodhost-snippets', [$this, 'admin_page']); }
+    
+    public function add_admin_menu() {
+        $parent = menu_page_url('goodhost', false) ? 'goodhost' : 'tools.php';
+        add_submenu_page($parent, 'Code Snippets', 'Code Snippets', 'manage_options', 'goodhost-snippets', [$this, 'admin_page']);
+    }
     
     private function get_snippets($type = null, $active_only = false) {
         global $wpdb;
@@ -137,10 +140,10 @@ class GoodHost_Code_Snippets {
             </div></div>
         </div></div>
         <script>
-        document.getElementById('snippet-form').addEventListener('submit',function(e){e.preventDefault();var st=document.getElementById('save-status');st.textContent='Saving...';var fd=new FormData(this);fd.append('action','goodhost_save_snippet');fd.append('_wpnonce','<?php echo wp_create_nonce('goodhost_snippets'); ?>');fetch('<?php echo admin_url('admin-ajax.php'); ?>',{method:'POST',body:fd}).then(r=>r.json()).then(res=>{if(res.success){st.style.color='green';st.textContent='Saved!';setTimeout(()=>window.location.href='?page=goodhost-snippets',500);}else{st.style.color='red';st.textContent=res.data||'Error';}});});
+        document.getElementById('snippet-form').addEventListener('submit',function(e){e.preventDefault();var st=document.getElementById('save-status');st.textContent='Saving...';var fd=new FormData(this);fd.append('action','goodhost_save_snippet');fd.append('_wpnonce','<?php echo wp_create_nonce('goodhost_snippets'); ?>');fetch('<?php echo admin_url('admin-ajax.php'); ?>',{method:'POST',body:fd}).then(r=>r.json()).then(res=>{if(res.success){st.style.color='green';st.textContent='Saved!';setTimeout(function(){window.location.href='?page=goodhost-snippets';},500);}else{st.style.color='red';st.textContent=res.data||'Error';}});});
         function toggleSnippet(id,active){fetch('<?php echo admin_url('admin-ajax.php'); ?>',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'action=goodhost_toggle_snippet&id='+id+'&active='+(active?1:0)+'&_wpnonce=<?php echo wp_create_nonce('goodhost_snippets'); ?>'}).then(r=>r.json()).then(res=>{if(!res.success){alert(res.data||'Error');location.reload();}else{document.getElementById('snippet-'+id).classList.toggle('inactive',!active);}});}
         function deleteSnippet(id){if(!confirm('Delete this snippet?'))return;fetch('<?php echo admin_url('admin-ajax.php'); ?>',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'action=goodhost_delete_snippet&id='+id+'&_wpnonce=<?php echo wp_create_nonce('goodhost_snippets'); ?>'}).then(r=>r.json()).then(res=>{if(res.success)document.getElementById('snippet-'+id).remove();});}
-        document.getElementById('type').addEventListener('change',function(){var hint=document.getElementById('code-hint');switch(this.value){case 'php':hint.textContent="Don't include <?php tags for PHP snippets.";break;case 'css':hint.textContent="CSS will be wrapped in <style> tags automatically.";break;case 'js':hint.textContent="JavaScript will be wrapped in <script> tags automatically.";break;case 'html':hint.textContent="HTML will be output as-is.";break;}});
+        document.getElementById('type').addEventListener('change',function(){var hint=document.getElementById('code-hint');switch(this.value){case 'php':hint.textContent="Don't include <?php tags.";break;case 'css':hint.textContent="CSS wrapped in style tags.";break;case 'js':hint.textContent="JS wrapped in script tags.";break;case 'html':hint.textContent="HTML output as-is.";break;}});
         </script>
     <?php }
 }

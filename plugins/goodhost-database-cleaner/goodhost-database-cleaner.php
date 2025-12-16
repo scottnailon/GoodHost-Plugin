@@ -7,7 +7,6 @@
  * Author: Sites By Design
  * Author URI: https://sitesbydesign.com.au
  * License: GPL v2 or later
- * Requires Plugins: goodhost
  */
 
 if (!defined('ABSPATH')) { exit; }
@@ -21,7 +20,11 @@ class GoodHost_Database_Cleaner {
     }
     
     public function register_module($modules) { $modules['database-cleaner'] = ['name' => 'Database Cleaner', 'description' => 'Clean revisions, spam, transients', 'active' => true, 'settings_url' => admin_url('admin.php?page=goodhost-database')]; return $modules; }
-    public function add_admin_menu() { add_submenu_page('goodhost', 'Database Cleaner', 'Database', 'manage_options', 'goodhost-database', [$this, 'settings_page']); }
+    
+    public function add_admin_menu() {
+        $parent = menu_page_url('goodhost', false) ? 'goodhost' : 'tools.php';
+        add_submenu_page($parent, 'Database Cleaner', 'Database Cleaner', 'manage_options', 'goodhost-database', [$this, 'settings_page']);
+    }
     
     private function get_counts() {
         global $wpdb;
@@ -112,8 +115,8 @@ class GoodHost_Database_Cleaner {
         <p style="margin-top:20px"><button class="button button-primary button-hero" onclick="cleanAll()">Clean All</button></p>
         </div>
         <script>
-        function cleanItem(type){var btn=event.target;btn.disabled=true;btn.textContent='...';fetch('<?php echo admin_url('admin-ajax.php'); ?>',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'action=goodhost_db_clean&type='+type+'&_wpnonce=<?php echo wp_create_nonce('goodhost_db_clean'); ?>'}).then(r=>r.json()).then(res=>{if(res.success){btn.textContent='Done!';var c=res.data.counts;for(var k in c){var el=document.getElementById('c-'+k);if(el){el.textContent=c[k].toLocaleString();if(c[k]===0)el.classList.add('zero');}}}setTimeout(()=>{btn.textContent='Clean';btn.disabled=false;},1500);});}
-        function cleanAll(){if(!confirm('Clean all?'))return;var btn=event.target;btn.disabled=true;btn.textContent='Cleaning...';fetch('<?php echo admin_url('admin-ajax.php'); ?>',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'action=goodhost_db_clean&type=all&_wpnonce=<?php echo wp_create_nonce('goodhost_db_clean'); ?>'}).then(r=>r.json()).then(res=>{if(res.success){btn.textContent='Done!';setTimeout(()=>location.reload(),1000);}});}
+        function cleanItem(type){var btn=event.target;btn.disabled=true;btn.textContent='...';fetch('<?php echo admin_url('admin-ajax.php'); ?>',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'action=goodhost_db_clean&type='+type+'&_wpnonce=<?php echo wp_create_nonce('goodhost_db_clean'); ?>'}).then(r=>r.json()).then(res=>{if(res.success){btn.textContent='Done!';var c=res.data.counts;for(var k in c){var el=document.getElementById('c-'+k);if(el){el.textContent=c[k].toLocaleString();if(c[k]===0)el.classList.add('zero');}}}setTimeout(function(){btn.textContent='Clean';btn.disabled=false;},1500);});}
+        function cleanAll(){if(!confirm('Clean all?'))return;var btn=event.target;btn.disabled=true;btn.textContent='Cleaning...';fetch('<?php echo admin_url('admin-ajax.php'); ?>',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'action=goodhost_db_clean&type=all&_wpnonce=<?php echo wp_create_nonce('goodhost_db_clean'); ?>'}).then(r=>r.json()).then(res=>{if(res.success){btn.textContent='Done!';setTimeout(function(){location.reload();},1000);}});}
         function optimizeTables(){var btn=event.target;var st=document.getElementById('opt-status');btn.disabled=true;st.textContent='Optimizing...';fetch('<?php echo admin_url('admin-ajax.php'); ?>',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'action=goodhost_db_optimize&_wpnonce=<?php echo wp_create_nonce('goodhost_db_clean'); ?>'}).then(r=>r.json()).then(res=>{st.textContent=res.success?'Optimized '+res.data.optimized+' tables':'Error';btn.disabled=false;});}
         </script>
     <?php }

@@ -7,15 +7,11 @@
  * Author: Sites By Design
  * Author URI: https://sitesbydesign.com.au
  * License: GPL v2 or later
- * Requires Plugins: goodhost
  */
 
-if (!defined('ABSPATH')) {
-    exit;
-}
+if (!defined('ABSPATH')) { exit; }
 
 class GoodHost_Duplicate_Post {
-    
     public function __construct() {
         add_filter('goodhost_register_modules', [$this, 'register_module']);
         add_filter('post_row_actions', [$this, 'add_duplicate_link'], 10, 2);
@@ -25,15 +21,7 @@ class GoodHost_Duplicate_Post {
         add_action('admin_bar_menu', [$this, 'admin_bar_link'], 100);
     }
     
-    public function register_module($modules) {
-        $modules['duplicate-post'] = [
-            'name' => 'Duplicate Post',
-            'description' => 'Clone posts and pages',
-            'active' => true,
-            'settings_url' => ''
-        ];
-        return $modules;
-    }
+    public function register_module($modules) { $modules['duplicate-post'] = ['name' => 'Duplicate Post', 'description' => 'Clone posts and pages', 'active' => true, 'settings_url' => '']; return $modules; }
     
     public function add_duplicate_link($actions, $post) {
         if (!current_user_can('edit_posts')) return $actions;
@@ -50,7 +38,7 @@ class GoodHost_Duplicate_Post {
         if (!$post_id) return;
         if (is_admin()) { $screen = get_current_screen(); if (!$screen || $screen->base !== 'post') return; }
         $url = wp_nonce_url(admin_url('admin.php?action=goodhost_duplicate&post=' . $post_id), 'goodhost_duplicate_' . $post_id);
-        $wp_admin_bar->add_node(['id' => 'goodhost-duplicate', 'title' => '📋 Duplicate', 'href' => $url]);
+        $wp_admin_bar->add_node(['id' => 'goodhost-duplicate', 'title' => 'Duplicate', 'href' => $url]);
     }
     
     public function duplicate_post() {
@@ -106,5 +94,4 @@ class GoodHost_Duplicate_Post {
         }
     }
 }
-
 new GoodHost_Duplicate_Post();
