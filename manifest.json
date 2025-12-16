@@ -1,18 +1,156 @@
 {
-  "version": "1.0.0",
+  "version": "2.0.0",
   "updated": "2025-12-16",
+  "categories": {
+    "seo": "SEO Tools",
+    "performance": "Performance",
+    "security": "Security",
+    "admin": "Admin & Utilities",
+    "email": "Email"
+  },
   "plugins": {
     "news-sitemap": {
       "name": "News Sitemap",
       "slug": "news-sitemap",
+      "category": "seo",
       "description": "Google News sitemap generator. Creates a compliant XML sitemap for Google News.",
       "version": "1.0.0",
       "folder": "goodhost-news-sitemap",
       "main_file": "goodhost-news-sitemap.php",
       "requires": "5.0",
-      "requires_php": "7.4",
-      "author": "Sites By Design",
-      "author_url": "https://sitesbydesign.com.au"
+      "requires_php": "7.4"
+    },
+    "redirect-manager": {
+      "name": "Redirect Manager",
+      "slug": "redirect-manager",
+      "category": "seo",
+      "description": "301/302 redirect manager with 404 logging. Integrates with RankMath if installed.",
+      "version": "1.0.0",
+      "folder": "goodhost-redirect-manager",
+      "main_file": "goodhost-redirect-manager.php",
+      "requires": "5.0",
+      "requires_php": "7.4"
+    },
+    "broken-links": {
+      "name": "Broken Link Checker",
+      "slug": "broken-links",
+      "category": "seo",
+      "description": "Scan your content for broken links. Find and fix dead URLs.",
+      "version": "1.0.0",
+      "folder": "goodhost-broken-links",
+      "main_file": "goodhost-broken-links.php",
+      "requires": "5.0",
+      "requires_php": "7.4"
+    },
+    "disable-bloat": {
+      "name": "Disable Bloat",
+      "slug": "disable-bloat",
+      "category": "performance",
+      "description": "Remove WordPress bloat. Disable emojis, embeds, dashicons, RSS feeds, and more.",
+      "version": "1.0.0",
+      "folder": "goodhost-disable-bloat",
+      "main_file": "goodhost-disable-bloat.php",
+      "requires": "5.0",
+      "requires_php": "7.4"
+    },
+    "database-cleaner": {
+      "name": "Database Cleaner",
+      "slug": "database-cleaner",
+      "category": "performance",
+      "description": "Clean revisions, drafts, spam, transients, and orphaned data from your database.",
+      "version": "1.0.0",
+      "folder": "goodhost-database-cleaner",
+      "main_file": "goodhost-database-cleaner.php",
+      "requires": "5.0",
+      "requires_php": "7.4"
+    },
+    "lazy-load": {
+      "name": "Lazy Load",
+      "slug": "lazy-load",
+      "category": "performance",
+      "description": "Lazy load images, iframes, and videos to improve page load speed.",
+      "version": "1.0.0",
+      "folder": "goodhost-lazy-load",
+      "main_file": "goodhost-lazy-load.php",
+      "requires": "5.0",
+      "requires_php": "7.4"
+    },
+    "widget-disabler": {
+      "name": "Widget Disabler",
+      "slug": "widget-disabler",
+      "category": "performance",
+      "description": "Disable unused widgets in Elementor, Essential Addons, and Premium Addons.",
+      "version": "1.0.0",
+      "folder": "goodhost-widget-disabler",
+      "main_file": "goodhost-widget-disabler.php",
+      "requires": "5.0",
+      "requires_php": "7.4"
+    },
+    "login-protection": {
+      "name": "Login Protection",
+      "slug": "login-protection",
+      "category": "security",
+      "description": "Brute force prevention with login limits and lockouts.",
+      "version": "1.0.0",
+      "folder": "goodhost-login-protection",
+      "main_file": "goodhost-login-protection.php",
+      "requires": "5.0",
+      "requires_php": "7.4"
+    },
+    "security-headers": {
+      "name": "Security Headers",
+      "slug": "security-headers",
+      "category": "security",
+      "description": "Add HTTP security headers (X-Frame-Options, HSTS, CSP basics, etc).",
+      "version": "1.0.0",
+      "folder": "goodhost-security-headers",
+      "main_file": "goodhost-security-headers.php",
+      "requires": "5.0",
+      "requires_php": "7.4"
+    },
+    "smtp-mailer": {
+      "name": "SMTP Mailer",
+      "slug": "smtp-mailer",
+      "category": "email",
+      "description": "Configure SMTP for reliable email delivery. Works with Gmail, SendGrid, Mailgun, etc.",
+      "version": "1.0.0",
+      "folder": "goodhost-smtp",
+      "main_file": "goodhost-smtp.php",
+      "requires": "5.0",
+      "requires_php": "7.4"
+    },
+    "maintenance-mode": {
+      "name": "Maintenance Mode",
+      "slug": "maintenance-mode",
+      "category": "admin",
+      "description": "Coming soon / under construction page with countdown and customization.",
+      "version": "1.0.0",
+      "folder": "goodhost-maintenance",
+      "main_file": "goodhost-maintenance.php",
+      "requires": "5.0",
+      "requires_php": "7.4"
+    },
+    "duplicate-post": {
+      "name": "Duplicate Post",
+      "slug": "duplicate-post",
+      "category": "admin",
+      "description": "Clone posts, pages, and custom post types with one click.",
+      "version": "1.0.0",
+      "folder": "goodhost-duplicate-post",
+      "main_file": "goodhost-duplicate-post.php",
+      "requires": "5.0",
+      "requires_php": "7.4"
+    },
+    "code-snippets": {
+      "name": "Code Snippets",
+      "slug": "code-snippets",
+      "category": "admin",
+      "description": "Add custom PHP, CSS, and JavaScript code without editing theme files.",
+      "version": "1.0.0",
+      "folder": "goodhost-code-snippets",
+      "main_file": "goodhost-code-snippets.php",
+      "requires": "5.0",
+      "requires_php": "7.4"
     }
   }
 }
