@@ -1,13 +1,18 @@
 {
-    "version": "1.0.0",
-    "plugins": {
-        "goodhost-news-sitemap": {
-            "name": "News Sitemap",
-            "description": "Google News sitemap generator",
-            "version": "1.0.0",
-            "download_url": "https://github.com/scottnailon/GoodHost-Plugin/raw/main/goodhost-news-sitemap/goodhost-news-sitemap.php",
-            "folder": "goodhost-news-sitemap",
-            "main_file": "goodhost-news-sitemap.php"
-        }
+  "version": "1.0.0",
+  "updated": "2025-12-16",
+  "plugins": {
+    "news-sitemap": {
+      "name": "News Sitemap",
+      "slug": "news-sitemap",
+      "description": "Google News sitemap generator. Creates a compliant XML sitemap for Google News.",
+      "version": "1.0.0",
+      "folder": "goodhost-news-sitemap",
+      "main_file": "goodhost-news-sitemap.php",
+      "requires": "5.0",
+      "requires_php": "7.4",
+      "author": "Sites By Design",
+      "author_url": "https://sitesbydesign.com.au"
     }
+  }
 }
