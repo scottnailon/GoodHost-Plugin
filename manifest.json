@@ -1,0 +1,13 @@
+{
+    "version": "1.0.0",
+    "plugins": {
+        "goodhost-news-sitemap": {
+            "name": "News Sitemap",
+            "description": "Google News sitemap generator",
+            "version": "1.0.0",
+            "download_url": "https://github.com/scottnailon/GoodHost-Plugin/raw/main/goodhost-news-sitemap/goodhost-news-sitemap.php",
+            "folder": "goodhost-news-sitemap",
+            "main_file": "goodhost-news-sitemap.php"
+        }
+    }
+}
