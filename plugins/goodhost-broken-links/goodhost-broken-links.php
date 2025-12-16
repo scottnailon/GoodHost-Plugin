@@ -7,7 +7,6 @@
  * Author: Sites By Design
  * Author URI: https://sitesbydesign.com.au
  * License: GPL v2 or later
- * Requires Plugins: goodhost
  */
 
 if (!defined('ABSPATH')) { exit; }
@@ -34,7 +33,10 @@ class GoodHost_Broken_Link_Checker {
         $wpdb->query("CREATE TABLE IF NOT EXISTS {$this->table_name} (id bigint(20) AUTO_INCREMENT, url varchar(2000) NOT NULL, url_hash varchar(32) NOT NULL, status_code int(3) DEFAULT NULL, status_text varchar(100) DEFAULT '', source_id bigint(20) NOT NULL, source_type varchar(20) NOT NULL, source_field varchar(50) NOT NULL, link_text varchar(500) DEFAULT '', is_broken tinyint(1) DEFAULT 0, last_checked datetime DEFAULT NULL, created_at datetime DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id), UNIQUE KEY url_source (url_hash, source_id, source_type), KEY is_broken (is_broken)) " . $wpdb->get_charset_collate());
     }
     
-    public function add_admin_menu() { add_submenu_page('goodhost', 'Broken Link Checker', 'Broken Links', 'manage_options', 'goodhost-broken-links', [$this, 'settings_page']); }
+    public function add_admin_menu() {
+        $parent = menu_page_url('goodhost', false) ? 'goodhost' : 'tools.php';
+        add_submenu_page($parent, 'Broken Link Checker', 'Broken Links', 'manage_options', 'goodhost-broken-links', [$this, 'settings_page']);
+    }
     
     private function extract_links($content) {
         $links = [];
@@ -148,11 +150,11 @@ class GoodHost_Broken_Link_Checker {
         <script>
         var scanning=false,checking=false;
         function startScan(){if(scanning)return;scanning=true;document.getElementById('progress-box').style.display='block';document.getElementById('progress-text').textContent='Scanning posts for links...';scanBatch(0);}
-        function scanBatch(offset){fetch('<?php echo admin_url('admin-ajax.php'); ?>',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'action=goodhost_scan_links&offset='+offset+'&_wpnonce=<?php echo wp_create_nonce('goodhost_links'); ?>'}).then(r=>r.json()).then(res=>{if(res.success){var pct=Math.round((res.data.offset/res.data.total)*100);document.getElementById('progress-fill').style.width=pct+'%';document.getElementById('progress-detail').textContent='Scanned '+res.data.offset+' of '+res.data.total+' posts. Found '+res.data.links_found+' new links.';if(!res.data.done)scanBatch(res.data.offset);else{document.getElementById('progress-text').textContent='Scan complete!';scanning=false;setTimeout(()=>location.reload(),1000);}}});}
+        function scanBatch(offset){fetch('<?php echo admin_url('admin-ajax.php'); ?>',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'action=goodhost_scan_links&offset='+offset+'&_wpnonce=<?php echo wp_create_nonce('goodhost_links'); ?>'}).then(r=>r.json()).then(res=>{if(res.success){var pct=Math.round((res.data.offset/res.data.total)*100);document.getElementById('progress-fill').style.width=pct+'%';document.getElementById('progress-detail').textContent='Scanned '+res.data.offset+' of '+res.data.total+' posts. Found '+res.data.links_found+' new links.';if(!res.data.done)scanBatch(res.data.offset);else{document.getElementById('progress-text').textContent='Scan complete!';scanning=false;setTimeout(function(){location.reload();},1000);}}});}
         function startCheck(){if(checking)return;checking=true;document.getElementById('progress-box').style.display='block';document.getElementById('progress-text').textContent='Checking links...';checkNext();}
-        function checkNext(){fetch('<?php echo admin_url('admin-ajax.php'); ?>',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'action=goodhost_check_link&_wpnonce=<?php echo wp_create_nonce('goodhost_links'); ?>'}).then(r=>r.json()).then(res=>{if(res.success){if(res.data.done){document.getElementById('progress-text').textContent='Check complete!';document.getElementById('progress-fill').style.width='100%';checking=false;setTimeout(()=>location.reload(),1000);}else{var checked=res.data.total-res.data.remaining;var pct=Math.round((checked/res.data.total)*100);document.getElementById('progress-fill').style.width=pct+'%';document.getElementById('progress-detail').textContent='Checked '+checked+' of '+res.data.total+'. Broken: '+res.data.broken+'. Last: '+res.data.last_status;checkNext();}}});}
+        function checkNext(){fetch('<?php echo admin_url('admin-ajax.php'); ?>',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'action=goodhost_check_link&_wpnonce=<?php echo wp_create_nonce('goodhost_links'); ?>'}).then(r=>r.json()).then(res=>{if(res.success){if(res.data.done){document.getElementById('progress-text').textContent='Check complete!';document.getElementById('progress-fill').style.width='100%';checking=false;setTimeout(function(){location.reload();},1000);}else{var checked=res.data.total-res.data.remaining;var pct=Math.round((checked/res.data.total)*100);document.getElementById('progress-fill').style.width=pct+'%';document.getElementById('progress-detail').textContent='Checked '+checked+' of '+res.data.total+'. Broken: '+res.data.broken+'. Last: '+res.data.last_status;checkNext();}}});}
         function recheckLink(id){var btn=event.target;btn.disabled=true;btn.textContent='...';fetch('<?php echo admin_url('admin-ajax.php'); ?>',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'action=goodhost_recheck_link&id='+id+'&_wpnonce=<?php echo wp_create_nonce('goodhost_links'); ?>'}).then(r=>r.json()).then(res=>{if(res.success)location.reload();else{btn.disabled=false;btn.textContent='Recheck';}});}
-        function dismissLink(id){if(!confirm('Remove this link from tracking?'))return;fetch('<?php echo admin_url('admin-ajax.php'); ?>',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'action=goodhost_delete_link&id='+id+'&_wpnonce=<?php echo wp_create_nonce('goodhost_links'); ?>'}).then(()=>document.getElementById('link-row-'+id).remove());}
+        function dismissLink(id){if(!confirm('Remove this link from tracking?'))return;fetch('<?php echo admin_url('admin-ajax.php'); ?>',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'action=goodhost_delete_link&id='+id+'&_wpnonce=<?php echo wp_create_nonce('goodhost_links'); ?>'}).then(function(){document.getElementById('link-row-'+id).remove();});}
         </script>
     <?php }
 }
